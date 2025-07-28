@@ -151,6 +151,12 @@ copy_configuration() {
         local source_path="$SOURCE_DIR/$file"
         local target_path="$target_dir/$file"
         
+        # Special handling for README.md to avoid overwriting existing project README
+        if [[ "$file" == "README.md" ]] && [[ -f "$target_dir/README.md" ]]; then
+            target_path="$target_dir/CLAUDE_SETUP_README.md"
+            print_status $YELLOW "Found existing README.md, copying as CLAUDE_SETUP_README.md instead"
+        fi
+        
         if [[ -e "$source_path" ]]; then
             if [[ -d "$source_path" ]]; then
                 # Copy directory
@@ -159,7 +165,11 @@ copy_configuration() {
             else
                 # Copy file
                 cp "$source_path" "$target_path"
-                print_status $GREEN "Copied file: $file"
+                if [[ "$file" == "README.md" ]] && [[ "$target_path" == "$target_dir/CLAUDE_SETUP_README.md" ]]; then
+                    print_status $GREEN "Copied file: README.md → CLAUDE_SETUP_README.md"
+                else
+                    print_status $GREEN "Copied file: $file"
+                fi
             fi
         else
             print_status $YELLOW "Warning: Source file/directory not found: $file"
@@ -249,6 +259,12 @@ verify_installation() {
 display_post_install_instructions() {
     local target_dir="$1"
     
+    # Determine which README file to reference
+    local readme_file="README.md"
+    if [[ -f "$target_dir/CLAUDE_SETUP_README.md" ]]; then
+        readme_file="CLAUDE_SETUP_README.md"
+    fi
+    
     cat << EOF
 
 ${GREEN}🎉 Claude Configuration Successfully Installed!${NC}
@@ -286,7 +302,7 @@ ${BLUE}Important Notes:${NC}
 - Security permissions are configured to follow best practices
 
 ${BLUE}Documentation:${NC}
-- See README.md for detailed usage instructions
+- See ${readme_file} for detailed Claude setup instructions
 - Check .claude/commands/ for available custom commands
 - Review .claude/agents/ for specialized AI agents
 
