@@ -12,6 +12,7 @@
             "Bash(rg:*)",
             "Bash(sed:*)",
             "Bash(touch:*)",
+            "Read(~/.zshrc)",
             
             // Bash commands - Git operations
             "Bash(git add:*)",
@@ -80,7 +81,8 @@
             "WebFetch(domain:docs.anthropic.com)",
             "WebFetch(domain:flowbite.com)",
             "WebFetch(domain:github.com)",
-            "WebFetch(domain:www.npmjs.com)"
+            "WebFetch(domain:www.npmjs.com)",
+            "WebSearch(query:*)"
         ],
         "deny": [
             "Bash(npm run build:*)",
@@ -92,12 +94,7 @@
     "enabledMcpjsonServers": [
         "context7",
         "puppeteer",
-        "sequential-thinking",
-        "Figma",
-        "linear",
-        "stripe",
-        "postgres",
-        "playwright"
+        "sequential-thinking"
     ],
     "hooks": {
         "PreToolUse": [
