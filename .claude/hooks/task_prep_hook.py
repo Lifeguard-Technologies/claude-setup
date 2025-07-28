@@ -13,40 +13,65 @@ from pathlib import Path
 
 def get_next_instance_id(base_dir: Path) -> int:
     """Find the next available instance ID by checking existing directories."""
+    # If base directory doesn't exist, start with ID 1
     if not base_dir.exists():
         return 1
     
-    existing_dirs = [
-        d for d in base_dir.iterdir() 
-        if d.is_dir() and d.name.startswith('claude-instance-')
-    ]
-    
-    if not existing_dirs:
+    try:
+        # Get all directories that match the pattern
+        existing_dirs = [
+            d for d in base_dir.iterdir() 
+            if d.is_dir() and d.name.startswith('claude-instance-')
+        ]
+        
+        if not existing_dirs:
+            return 1
+        
+        # Extract numbers from directory names
+        numbers = []
+        for dir_path in existing_dirs:
+            match = re.search(r'claude-instance-(\d+)', dir_path.name)
+            if match:
+                try:
+                    numbers.append(int(match.group(1)))
+                except ValueError:
+                    # Skip malformed directory names
+                    continue
+        
+        return max(numbers) + 1 if numbers else 1
+    except (OSError, PermissionError):
+        # If we can't read the directory, start with ID 1
         return 1
-    
-    # Extract numbers from directory names
-    numbers = []
-    for dir_path in existing_dirs:
-        match = re.search(r'claude-instance-(\d+)', dir_path.name)
-        if match:
-            numbers.append(int(match.group(1)))
-    
-    return max(numbers) + 1 if numbers else 1
 
 
 def create_instance_directory(cwd: str, instance_id: int) -> tuple[bool, str]:
     """Create the claude-instance directory and return success status and path."""
     try:
-        base_dir = Path(cwd) / "claude-code-storage"
+        # Validate cwd exists and is a directory
+        cwd_path = Path(cwd)
+        if not cwd_path.exists():
+            return False, f"Working directory does not exist: {cwd}"
+        if not cwd_path.is_dir():
+            return False, f"Working directory is not a directory: {cwd}"
+        
+        base_dir = cwd_path / "claude-code-storage"
         instance_dir = base_dir / f"claude-instance-{instance_id}"
         
-        # Create directories with proper permissions
-        base_dir.mkdir(exist_ok=True)
-        instance_dir.mkdir(exist_ok=True)
+        # Create directories with proper permissions, including all parent directories
+        base_dir.mkdir(parents=True, exist_ok=True, mode=0o755)
+        instance_dir.mkdir(parents=True, exist_ok=True, mode=0o755)
+        
+        # Verify the directories were created successfully
+        if not instance_dir.exists() or not instance_dir.is_dir():
+            return False, f"Failed to create instance directory: {instance_dir}"
         
         return True, str(instance_dir)
+    except PermissionError as e:
+        return False, f"Permission denied creating directory: {e}"
+    except OSError as e:
+        return False, f"OS error creating directory: {e}"
     except Exception as e:
-        return False, str(e)
+        return False, f"Unexpected error creating directory: {type(e).__name__}: {e}"
 
 
 def validate_prompt(prompt: str) -> tuple[bool, str]:
