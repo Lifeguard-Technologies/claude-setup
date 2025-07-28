@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Automatically manage git branches based on task type.
 """
@@ -10,9 +11,10 @@ def create_branch_for_task(prompt):
     """Create appropriate branch based on task type."""
     task_patterns = {
         '/hotfix': 'hotfix/',
-        '/task_medium': 'feature/',
+        '/analyze': 'feature/',
         '/refactor': 'refactor/',
-        '/debug': 'fix/'
+        '/debug': 'fix/',
+        '/fix': 'fix/'
     }
     
     for pattern, prefix in task_patterns.items():
