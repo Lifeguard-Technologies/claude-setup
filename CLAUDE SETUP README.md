@@ -80,12 +80,14 @@ chmod +x .claude/hooks/task_medium_prep_hook.py
 ## Features
 
 ### 🎯 Custom Commands
+
 - **`/commit`**: Intelligent commit workflow with conventional standards
 - **`/code-review`**: Reviews uncommitted changes before committing
 - **`/task_medium`**: Advanced problem-solving with automated directory management
 - **`/task_easy`**: Simplified task workflow for lighter needs
 
 ### 🤖 Custom Agents
+
 - **`investigator`**: Expert code investigator that tracks down related code to problems
   - Uses sequential thinking and advanced search tools
   - Generates comprehensive INVESTIGATION_REPORT.md files
@@ -102,12 +104,14 @@ chmod +x .claude/hooks/task_medium_prep_hook.py
   - Checks for best practices and potential issues
 
 ### 🔌 MCP Servers
+
 - **Context7**: Library documentation and code context
-- **Puppeteer**: Browser automation and web scraping  
+- **Puppeteer**: Browser automation and web scraping
 - **Sequential Thinking**: Advanced reasoning and problem-solving
 - **DeepWiki**: Repository documentation fetching
 
 ### ⚡ Hook System
+
 - **UserPromptSubmit**: Automatic directory creation for task workflows
 - **Extensible**: Easy to add custom hooks for workflow automation
 - **Documentation**: [Hooks Reference](https://docs.anthropic.com/en/docs/claude-code/hooks) | [Hooks Guide](https://docs.anthropic.com/en/docs/claude-code/hooks-guide)
@@ -119,11 +123,13 @@ chmod +x .claude/hooks/task_medium_prep_hook.py
 Automated workflow for complex problem-solving with structured investigation and planning.
 
 **Usage:**
+
 ```bash
 /task_medium [problem description]
 ```
 
 **Features:**
+
 - ✅ Automatic `claude-instance-{id}` directory creation
 - ✅ Sequential thinking for complex reasoning
 - ✅ Multi-agent workflow with specialized subagents
@@ -134,11 +140,13 @@ Automated workflow for complex problem-solving with structured investigation and
 - ✅ Edge case handling and best practices focus
 
 **Example:**
+
 ```bash
 /task_medium implement user authentication system
 ```
 
 **Workflow:**
+
 1. 🔧 Hook detects `/task_medium` prompt
 2. 📁 Creates `claude-code-storage/claude-instance-{id}/` directory
 3. 🔍 Investigator agent analyzes codebase using sequential thinking
@@ -153,11 +161,13 @@ Automated workflow for complex problem-solving with structured investigation and
 Initiates code-reviewer agent to analyze uncommitted changes only.
 
 **Usage:**
+
 ```bash
 /code-review
 ```
 
 **Features:**
+
 - Focuses exclusively on uncommitted changes
 - Reviews modified files for quality, security, and maintainability
 - Provides prioritized feedback:
@@ -167,6 +177,7 @@ Initiates code-reviewer agent to analyze uncommitted changes only.
 - Includes specific fix examples
 
 **Example:**
+
 ```bash
 # After making changes
 /code-review
@@ -179,6 +190,7 @@ Initiates code-reviewer agent to analyze uncommitted changes only.
 Streamlined commit workflow following conventional commit standards.
 
 **Features:**
+
 - Diff analysis and change summarization
 - Conventional commit message formatting
 - Clean, focused commits
@@ -186,6 +198,7 @@ Streamlined commit workflow following conventional commit standards.
 **Important:** Run `/code-review` before committing to ensure code quality.
 
 **Example:**
+
 ```bash
 # Review changes first
 /code-review
@@ -272,16 +285,19 @@ The `.mcp.json` file defines server configurations:
 ### Common Issues
 
 **Hook not triggering:**
+
 - Ensure `uv` is installed and in PATH
 - Check script permissions: `chmod +x .claude/hooks/task_medium_prep_hook.py`
 - Verify hook configuration in `.claude/settings.json`
 
 **Directory creation fails:**
+
 - Check file system permissions
 - Ensure `claude-code-storage/` parent directory exists
 - Review hook script logs for error details
 
 **MCP servers not loading:**
+
 - Verify Node.js and npx are installed
 - Check `.mcp.json` configuration syntax
 - Ensure MCP packages are available via npx
@@ -309,6 +325,7 @@ claude --debug
 4. Test with sample inputs
 
 **Resources:**
+
 - [Hooks Reference Documentation](https://docs.anthropic.com/en/docs/claude-code/hooks)
 - [Hooks Implementation Guide](https://docs.anthropic.com/en/docs/claude-code/hooks-guide)
 
@@ -323,6 +340,7 @@ This configuration setup is provided as-is for Claude Code enhancement.
 ---
 
 **Need help?** Check the documentation:
+
 - [Claude Code Main Docs](https://docs.anthropic.com/claude-code)
 - [Hooks Reference](https://docs.anthropic.com/en/docs/claude-code/hooks)
 - [Hooks Implementation Guide](https://docs.anthropic.com/en/docs/claude-code/hooks-guide)
